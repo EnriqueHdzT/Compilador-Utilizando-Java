@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Scanner {
+public class Escaneo {
 
     private final String source;
 
@@ -34,18 +34,25 @@ public class Scanner {
         palabrasReservadas.put("mientras", TipoToken.MIENTRAS);
     }
 
-    Scanner(String source){
+    Escaneo(String source){
         this.source = source;
     }
 
     List<Token> scanTokens(String source){
         
-        for(int i = 0; i < source.length(); i++ ){
-
+        for(int i = 0; i < source.length(); i++){
+            switch (source.charAt(i)) {
+                case "a":
+                    
+                    break;
+            
+                default:
+                    break;
+            }
         }
 
-        tokens.add(new Token(TipoToken.EOF, "", null, linea));
+        this.tokens.add(new Token(TipoToken.EOF, "", null, linea));
 
-        return tokens;
+        return this.tokens;
     }
 }
