@@ -54,8 +54,6 @@ public enum TipoToken {
     MENOR_O_IGUAL_QUE,      // <=
     MAYOR_QUE,              // >
     MAYOR_O_IGUAL_QUE,      // >=
-    LINEA_COMENTARIO,       // //
-    COMENTARIO_LARGO,       // /* */
 
     // Final de cadena
     EOF,
