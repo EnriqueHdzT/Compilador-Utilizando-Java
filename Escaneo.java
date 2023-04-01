@@ -50,7 +50,7 @@ public class Escaneo {
 
             if(currentChar == '\\'){
                 linea++;
-                pos+=2;
+                pos++;
                 cadena = "";
                 continue;
             }

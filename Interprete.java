@@ -32,7 +32,7 @@ public class Interprete {
         Scanner texto = new Scanner(arch_entrada);
         String data = "";
         while(texto.hasNextLine()){
-            data += texto.nextLine() + "\n";
+            data += texto.nextLine() + '\\';
         }
         texto.close();
         data = data.replace(" ", "");
