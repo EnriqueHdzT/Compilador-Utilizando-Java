@@ -1,12 +1,14 @@
-package mx.ipn.escom.compiladores;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Scanner;
 
 public class Interprete {
 
@@ -26,8 +28,15 @@ public class Interprete {
     }
 
     private static void ejecutarArchivo(String path) throws IOException {
-        byte[] bytes = Files.readAllBytes(Paths.get(path));
-        ejecutar(new String(bytes, Charset.defaultCharset()));
+        File arch_entrada = new File(path);
+        Scanner texto = new Scanner(arch_entrada);
+        String data = "";
+        while(texto.hasNextLine()){
+            data += texto.nextLine() + "\n";
+        }
+        texto.close();
+        data = data.replace(" ", "");
+        ejecutar(data);
 
         // Se indica que existe un error
         if(existenErrores) System.exit(65);
@@ -40,6 +49,7 @@ public class Interprete {
         for(;;){
             System.out.print(">>> ");
             String linea = reader.readLine();
+            linea = linea.replace(" ", "");
             if(linea == null) break; // Presionar Ctrl + D
             ejecutar(linea);
             existenErrores = false;
@@ -47,7 +57,7 @@ public class Interprete {
     }
 
     private static void ejecutar(String source){
-        Scanner scanner = new Scanner(source);
+        Escaneo scanner = new Escaneo(source);
         List<Token> tokens = scanner.scanTokens();
 
         for(Token token : tokens){
@@ -70,5 +80,4 @@ public class Interprete {
         );
         existenErrores = true;
     }
-
 }
