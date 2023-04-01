@@ -43,6 +43,7 @@ public class Escaneo {
 
     List<Token> scanTokens(){
         String cadena = "";
+        int columna = 1;
         while(pos < source.length()){
             currentChar = source.charAt(pos);
             
@@ -51,6 +52,7 @@ public class Escaneo {
             if(currentChar == '\\'){
                 linea++;
                 pos++;
+                columna = 1;
                 cadena = "";
                 continue;
             }
@@ -164,13 +166,14 @@ public class Escaneo {
                         break;
                         
                     default:
-                        Interprete.error(linea,"Error en la posición: "+(pos+1));
+                        Interprete.error(linea,"Error en la posición: "+(columna));
                         tokens.clear();
                         return tokens;
                     }
                     cadena = "";
             }
             pos++;
+            columna++;
         }
         return tokens;
     }   
