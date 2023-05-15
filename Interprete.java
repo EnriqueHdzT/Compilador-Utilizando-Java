@@ -32,10 +32,11 @@ public class Interprete {
         Scanner texto = new Scanner(arch_entrada);
         String data = "";
         while(texto.hasNextLine()){
-            data += texto.nextLine() + '\\';
+            data += texto.nextLine();
         }
         texto.close();
         data = data.replace(" ", "");
+        data = data.replace("\t", "");
         ejecutar(data);
 
         // Se indica que existe un error
@@ -50,6 +51,7 @@ public class Interprete {
             System.out.print(">>> ");
             String linea = reader.readLine();
             linea = linea.replace(" ", "");
+            linea = linea.replace("\t", "");
             if(linea == null) break; // Presionar Ctrl + D
             ejecutar(linea);
             existenErrores = false;
