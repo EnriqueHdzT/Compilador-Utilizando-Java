@@ -59,13 +59,8 @@ public class Interprete {
     }
 
     private static void ejecutar(String source){
-<<<<<<< HEAD
-        Scanner scanner = new Scanner(source);
-        List<Token> tokens = scanner.scanTokens(source);
-=======
         Escaneo scanner = new Escaneo(source);
         List<Token> tokens = scanner.scanTokens();
->>>>>>> Miguel
 
         for(Token token : tokens){
             System.out.println(token);
