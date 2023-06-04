@@ -49,7 +49,7 @@ public class Escaneo {
             
             cadena += currentChar;
 
-            if(currentChar == '\\'){
+            if(currentChar == '\n'){
                 linea++;
                 pos++;
                 columna = 1;
@@ -57,14 +57,15 @@ public class Escaneo {
                 continue;
             }
             if(palabrasReservadas.get(cadena) instanceof TipoToken){
-                tokens.add(new Token(palabrasReservadas.get(cadena), cadena, cadena, linea));
+                tokens.add(new Token(palabrasReservadas.get(cadena), cadena, null, linea));
                 cadena="";
             }
 
             if(!Character.isLetterOrDigit(currentChar)){
                 if(cadena.length()>=2){
-                    if(esNumero(cadena.substring(0,cadena.length()-1)))
-                        tokens.add(new Token(TipoToken.NUMERO, cadena.substring(0,cadena.length()-1), cadena.substring(0,cadena.length()-1), linea));
+                    if(esNumero(cadena.substring(0,cadena.length()-1))){
+                        tokens.add(new Token(TipoToken.NUMERO, "numero", cadena.substring(0,cadena.length()-1), linea));
+                    }
                     else    
                         tokens.add(new Token(TipoToken.IDENTIFICADOR, cadena.substring(0, cadena.length()-1), null, linea));
                     pos--;
@@ -108,8 +109,8 @@ public class Escaneo {
                             currentChar = source.charAt(pos+1);
                             switch (currentChar) {
                                 case '/':
-                                    tokens.add(new Token(TipoToken.LINEA_COMENTARIO, "//", null, linea));
-                                    pos++;
+                                tokens.add(new Token(TipoToken.LINEA_COMENTARIO, "//", null, linea));
+                                pos++;
                                     break;
                                 case '*':
                                     tokens.add(new Token(TipoToken.COMENTARIO_LARGO, "/*", null, linea));
@@ -175,6 +176,7 @@ public class Escaneo {
             pos++;
             columna++;
         }
+        tokens.add(new Token(TipoToken.EOF, "EOF", null, linea));
         return tokens;
     }   
  
