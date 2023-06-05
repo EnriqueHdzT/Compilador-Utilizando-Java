@@ -1,5 +1,5 @@
 class main(){
-    var number = 44;
+    var number = 44.44.4;
     if( number == 44){
         return true;
     }

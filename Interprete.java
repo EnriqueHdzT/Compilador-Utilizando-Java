@@ -59,13 +59,15 @@ public class Interprete {
     private static void ejecutar(String source) {
         Escaneo scanner = new Escaneo(source);
         List<Token> tokens = scanner.scanTokens();
+
+        for (Token token : tokens) {
+            System.out.println(token);
+        }
+
         /*
-         * for (Token token : tokens) {
-         * System.out.println(token);
-         * }
+         * Parseo parseo = new Parseo(tokens);
+         * parseo.parseo();
          */
-        Parseo parseo = new Parseo(tokens);
-        parseo.parseo();
     }
 
     /*
