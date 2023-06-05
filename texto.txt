@@ -1,7 +1,7 @@
-clase main(){
-    var numero = 44;
-    si( numero == 44){
-        retornar verdadero;
+class main(){
+    var number = 44;
+    if( number == 44){
+        return true;
     }
-    retornar falso;
+    return false;
 }

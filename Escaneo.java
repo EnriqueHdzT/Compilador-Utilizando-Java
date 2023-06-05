@@ -9,178 +9,186 @@ public class Escaneo {
 
     private final List<Token> tokens = new ArrayList<>();
 
-    private int linea = 0;
-
-    private char currentChar;
-
-    private int pos = 0;
-
-
     private static final Map<String, TipoToken> palabrasReservadas;
     static {
         palabrasReservadas = new HashMap<>();
-        palabrasReservadas.put("y", TipoToken.Y);
-        palabrasReservadas.put("clase", TipoToken.CLASE);
-        palabrasReservadas.put("ademas", TipoToken.ADEMAS);
-        palabrasReservadas.put("falso", TipoToken.FALSO);
-        palabrasReservadas.put("para", TipoToken.PARA);
-        palabrasReservadas.put("fun", TipoToken.FUN); //definir funciones
-        palabrasReservadas.put("si", TipoToken.SI);
-        palabrasReservadas.put("nulo", TipoToken.NULO);
-        palabrasReservadas.put("o", TipoToken.O);
-        palabrasReservadas.put("imprimir", TipoToken.IMPRIMIR);
-        palabrasReservadas.put("retornar", TipoToken.RETORNAR);
+        palabrasReservadas.put("class", TipoToken.CLASS);
+        palabrasReservadas.put("fun", TipoToken.FUNCTION);
+        palabrasReservadas.put("var", TipoToken.VARIABLE);
+        palabrasReservadas.put("while", TipoToken.WHILE_LOOP);
+        palabrasReservadas.put("for", TipoToken.FOR_LOOP);
+        palabrasReservadas.put("if", TipoToken.IF);
+        palabrasReservadas.put("else", TipoToken.ELSE);
+        palabrasReservadas.put("or", TipoToken.OR);
+        palabrasReservadas.put("and", TipoToken.AND);
+        palabrasReservadas.put("print", TipoToken.PRINT);
+        palabrasReservadas.put("return", TipoToken.RETURN);
+        palabrasReservadas.put("true", TipoToken.TRUE);
+        palabrasReservadas.put("false", TipoToken.FALSE);
+        palabrasReservadas.put("null", TipoToken.NULL);
+        palabrasReservadas.put("this", TipoToken.THIS);
         palabrasReservadas.put("super", TipoToken.SUPER);
-        palabrasReservadas.put("este", TipoToken.ESTE);
-        palabrasReservadas.put("verdadero", TipoToken.VERDADERO);
-        palabrasReservadas.put("var", TipoToken.VAR); //definir variables
-        palabrasReservadas.put("mientras", TipoToken.MIENTRAS);
     }
 
-    Escaneo(String source){
+    Escaneo(String source) {
         this.source = source;
     }
 
-    List<Token> scanTokens(){
-        String cadena = "";
-        int columna = 1;
-        while(pos < source.length()){
-            currentChar = source.charAt(pos);
-            
-            cadena += currentChar;
+    List<Token> scanTokens() {
+        int linea = 0;
+        int estado = 0;
+        char caracter = 0;
+        String lexema = "";
+        boolean foundNumber = false;
+        boolean foundDot = false;
+        boolean shouldBeID = false;
+        int inicioLexema = 0;
+        int i = 0;
 
-            if(currentChar == '\n'){
+        while (i < source.length()) {
+            caracter = source.charAt(i);
+            if (source.charAt(i) == '\n') {
                 linea++;
-                pos++;
-                columna = 1;
-                cadena = "";
-                continue;
-            }
-            if(palabrasReservadas.get(cadena) instanceof TipoToken){
-                tokens.add(new Token(palabrasReservadas.get(cadena), cadena, null, linea));
-                cadena="";
+                estado = 0;
+                lexema = "";
+                i++;
+            } else {
+                switch (estado) {
+                    case 0:
+                        if (caracter == '{') {
+                            tokens.add(new Token(TipoToken.BRACKET_LEFT, "{", linea));
+                            i++;
+                        } else if (caracter == '}') {
+                            tokens.add(new Token(TipoToken.BRACKET_RIGHT, "}", linea));
+                            i++;
+                        } else if (caracter == '(') {
+                            tokens.add(new Token(TipoToken.PARENTHESIS_LEFT, "(", linea));
+                            i++;
+                        } else if (caracter == ')') {
+                            tokens.add(new Token(TipoToken.PARENTHESIS_RIGHT, ")", linea));
+                            i++;
+                        } else if (caracter == ';') {
+                            tokens.add(new Token(TipoToken.SEMICOLON, ";", linea));
+                            i++;
+                        } else if (caracter == '=') {
+                            if (source.charAt(i + 1) == '=') {
+                                tokens.add(new Token(TipoToken.EQUAL_THAN, "==", linea));
+                                i = i + 2;
+                            } else {
+                                tokens.add(new Token(TipoToken.EQUALS, "=", linea));
+                                i++;
+                            }
+                        } else if (caracter == '!') {
+                            if (source.charAt(i + 1) == '=') {
+                                tokens.add(new Token(TipoToken.DIFFERENT_THAN, "!=", linea));
+                                i = i + 2;
+                            }
+                            tokens.add(new Token(TipoToken.EXCLAMATION, "!", linea));
+                            i++;
+                        } else if (caracter == '<') {
+                            if (source.charAt(i + 1) == '=') {
+                                tokens.add(new Token(TipoToken.LESS_OR_EQUAL_THAN, "<=", linea));
+                                i = i + 2;
+                            } else {
+                                tokens.add(new Token(TipoToken.LESS_THAN, "<", linea));
+                                i++;
+                            }
+                        } else if (caracter == '>') {
+                            if (source.charAt(i + 1) == '=') {
+                                tokens.add(new Token(TipoToken.GREATER_OR_EQUAL_THAN, ">=", linea));
+                                i = i + 2;
+                            }
+                            tokens.add(new Token(TipoToken.GREATER_THAN, ">", linea));
+                            i++;
+                        } else if (caracter == '-') {
+                            tokens.add(new Token(TipoToken.MINUS, "-", linea));
+                            i++;
+                        } else if (caracter == '+') {
+                            tokens.add(new Token(TipoToken.PLUS, "-", linea));
+                            i++;
+                        } else if (caracter == '/') {
+                            tokens.add(new Token(TipoToken.SLASH, "/", linea));
+                            i++;
+                        } else if (caracter == '*') {
+                            tokens.add(new Token(TipoToken.ASTERISK, "*", linea));
+                            i++;
+                        } else if (caracter == ',') {
+                            tokens.add(new Token(TipoToken.COMMA, ",", linea));
+                            i++;
+                        } else if (caracter == '.') {
+                            if (foundNumber && !foundDot) {
+                                foundDot = true;
+                                lexema = lexema + caracter;
+                                estado = 1;
+                                i++;
+                            } else {
+                                tokens.add(new Token(TipoToken.DOT, ".", linea));
+                                i++;
+                            }
+                        } else if (Character.isAlphabetic(caracter) || Character.isDigit(caracter)) {
+                            if (Character.isDigit(caracter) && !foundNumber) {
+                                foundNumber = !foundNumber;
+                            }
+                            estado = 1;
+                            inicioLexema = i;
+                        }
+                        break;
+
+                    case 1:
+                        TipoToken tt = palabrasReservadas.get(lexema);
+                        if (tt != null) {
+                            tokens.add(new Token(tt, lexema, linea));
+                            if (tt == TipoToken.CLASS ||
+                                    tt == TipoToken.VARIABLE ||
+                                    tt == TipoToken.FUNCTION ||
+                                    tt == TipoToken.SUPER) {
+                                shouldBeID = true;
+                            } else {
+                                shouldBeID = false;
+                            }
+                            lexema = "";
+                            estado = 0;
+                            break;
+                        }
+                        if (Character.isAlphabetic(caracter) || Character.isDigit(caracter)) {
+                            if (Character.isAlphabetic(caracter) && foundNumber) {
+                                tokens.add(new Token(TipoToken.NUMBER, lexema));
+                                lexema = "" + caracter;
+                                inicioLexema = i;
+                                foundNumber = false;
+                                foundDot = false;
+                                i++;
+                            } else {
+                                lexema = lexema + caracter;
+                                i++;
+                            }
+                        } else if (foundNumber) {
+                            tokens.add(new Token(TipoToken.NUMBER, lexema, linea));
+                            lexema = "";
+                            estado = 0;
+                            foundNumber = false;
+                            foundDot = false;
+                        } else if (shouldBeID) {
+                            tokens.add(new Token(TipoToken.ID, lexema, linea));
+                            lexema = "";
+                            estado = 0;
+                            shouldBeID = false;
+                        } else {
+                            tokens.add(new Token(TipoToken.STRING, lexema, linea));
+                            lexema = "";
+                            estado = 0;
+
+                        }
+                }
             }
 
-            if(!Character.isLetterOrDigit(currentChar)){
-                if(cadena.length()>=2){
-                    if(esNumero(cadena.substring(0,cadena.length()-1))){
-                        tokens.add(new Token(TipoToken.NUMERO, "numero", cadena.substring(0,cadena.length()-1), linea));
-                    }
-                    else    
-                        tokens.add(new Token(TipoToken.IDENTIFICADOR, cadena.substring(0, cadena.length()-1), null, linea));
-                    pos--;
-                }else
-                    switch(currentChar){
-                        case '(':
-                            tokens.add(new Token(TipoToken.PAR_IZ, cadena, null, linea));
-                            break;
-                        case ')':
-                            tokens.add(new Token(TipoToken.PAR_DER, cadena, null, linea));
-                            break;
-                        case '{':
-                            tokens.add(new Token(TipoToken.LLAVE_IZ, cadena, null, linea));
-                            break;
-                        case '}':
-                            tokens.add(new Token(TipoToken.PAR_DER, cadena, null, linea));
-                            break;
-                        case ',':
-                            tokens.add(new Token(TipoToken.COMA, cadena, null, linea));
-                            break;
-                        case '.':
-                            tokens.add(new Token(TipoToken.PUNTO, cadena, null, linea));
-                            break;
-                        case ';':
-                            tokens.add(new Token(TipoToken.PUNTO_COMA, cadena, null, linea));
-                            break;
-                        case '-':
-                            tokens.add(new Token(TipoToken.MENOS, cadena, null, linea));
-                            break;
-                        case '+':
-                            tokens.add(new Token(TipoToken.MAS, cadena, null, linea));
-                            break;
-                        case '*':
-                            currentChar = source.charAt(pos+1);
-                            if(currentChar == '/')
-                                tokens.add(new Token(TipoToken.COMENTARIO_LARGO, "*/", null, linea));
-                            else
-                                tokens.add(new Token(TipoToken.POR, cadena, null, linea));
-                            break;
-                        case '/':
-                            currentChar = source.charAt(pos+1);
-                            switch (currentChar) {
-                                case '/':
-                                tokens.add(new Token(TipoToken.LINEA_COMENTARIO, "//", null, linea));
-                                pos++;
-                                    break;
-                                case '*':
-                                    tokens.add(new Token(TipoToken.COMENTARIO_LARGO, "/*", null, linea));
-                                    pos++;
-                                    break;
-                                default:
-                                    tokens.add(new Token(TipoToken.BARRA, "/", null, linea));
-                                    break;
-                            }
-                        break;
-                    case '!':
-                        currentChar = source.charAt(pos+1);
-                        if(currentChar == '='){
-                                tokens.add(new Token(TipoToken.DIFERENTE_DE, "!=", null, linea));
-                                pos++;
-                            }else
-                                tokens.add(new Token(TipoToken.NIEGA, "!", null, linea));
-                        break;
-                    case '=':
-                        currentChar = source.charAt(pos+1);
-                        switch(currentChar){
-                            case '=':
-                                tokens.add(new Token(TipoToken.IGUAL_QUE, "==", null, linea));
-                                pos++;
-                                break;
-                            default:
-                                tokens.add(new Token(TipoToken.ASIGNA, "=", null, linea));
-                                break;
-                        }
-                        break;
-                    case '<':
-                        currentChar = source.charAt(pos+1);
-                        switch (currentChar) {
-                            case '=':
-                                tokens.add(new Token(TipoToken.MENOR_O_IGUAL_QUE, "<=", null, linea));
-                                pos++;
-                                break;
-                            default:
-                                tokens.add(new Token(TipoToken.MENOR_QUE, "<", null, linea));
-                                break;
-                        }
-                        break;
-                    case '>':
-                        currentChar = source.charAt(pos + 1);
-                        switch (currentChar) {
-                            case '=':
-                                tokens.add(new Token(TipoToken.MENOR_O_IGUAL_QUE, ">=", null, linea));
-                                pos++;
-                                break;
-                            default:
-                                tokens.add(new Token(TipoToken.MENOR_QUE, null, null, linea));
-                                break;
-                        }
-                        break;
-                        
-                    default:
-                        Interprete.error(linea,"Error en la posición: "+(columna));
-                        tokens.clear();
-                        return tokens;
-                    }
-                    cadena = "";
-            }
-            pos++;
-            columna++;
         }
-        tokens.add(new Token(TipoToken.EOF, "EOF", null, linea));
+
+        tokens.add(new Token(TipoToken.EOF, "EOF", linea));
         return tokens;
-    }   
- 
-    public static boolean esNumero(String str){
+    }
+
+    public static boolean esNumero(String str) {
         try {
             Double.parseDouble(str);
             return true;
@@ -188,5 +196,4 @@ public class Escaneo {
             return false;
         }
     }
-
 }
