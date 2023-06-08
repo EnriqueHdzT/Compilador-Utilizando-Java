@@ -93,7 +93,6 @@ public class Parseo {
             varDeclaration();
             Declaration();
         } else if (preanalisis.equals(finCadena)) {
-            System.out.println("No se introdujo nada que analizar");
             return;
         } else if (preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo)
                 || preanalisis.equals(esto) || preanalisis.equals(numero) || preanalisis.equals(cadena)
