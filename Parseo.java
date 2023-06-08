@@ -65,7 +65,7 @@ public class Parseo {
 
         if (!hayErrores && !preanalisis.equals(finCadena)) {
             System.out.println(
-                    "Error en la posición " + preanalisis.linea + ". No se esperaba el token " +
+                    "Error en la linea " + preanalisis.linea + ". No se esperaba el token " +
                             preanalisis.tipo);
         } else if (!hayErrores && preanalisis.equals(finCadena)) {
             System.out.println("Consulta válida");
@@ -396,15 +396,19 @@ public class Parseo {
         if (hayErrores) {
             return;
         }
-        callOpc();
-
-        if (preanalisis.equals(exclamacion) || preanalisis.equals(menos)) {
+        if (preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo)
+                || preanalisis.equals(esto) || preanalisis.equals(numero) || preanalisis.equals(cadena)
+                || preanalisis.equals(identificador) || preanalisis.equals(parentesisIzq)
+                || preanalisis.equals(ssuper)) {
             logicOr();
-        } else {
+        } else if (!preanalisis.equals(exclamacion) || !preanalisis.equals(menos)) {
             callOpc();
             coincidir(identificador);
             coincidir(igual);
             assignment();
+        } else {
+            hayErrores = true;
+            System.out.println("Error assignment");
         }
     }
 
@@ -755,7 +759,7 @@ public class Parseo {
             preanalisis = tokens.get(i);
         } else {
             hayErrores = true;
-            System.out.println("Error en la posición " + preanalisis.linea +
+            System.out.println("Error en la linea " + preanalisis.linea +
                     ". Se esperaba un  " + t.tipo);
 
         }
