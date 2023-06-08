@@ -149,8 +149,7 @@ public class Escaneo {
                             lexema = "";
                             estado = 0;
                             break;
-                        }
-                        if (Character.isAlphabetic(caracter) || Character.isDigit(caracter)) {
+                        } else if (Character.isAlphabetic(caracter) || Character.isDigit(caracter)) {
                             if (Character.isAlphabetic(caracter) && foundNumber) {
                                 tokens.add(new Token(TipoToken.NUMBER, lexema));
                                 lexema = "" + caracter;
@@ -158,21 +157,32 @@ public class Escaneo {
                                 foundNumber = false;
                                 foundDot = false;
                                 i++;
-                            } else {
+                            }
+
+                            else {
                                 lexema = lexema + caracter;
                                 i++;
                             }
+                            break;
                         } else if (foundNumber) {
-                            tokens.add(new Token(TipoToken.NUMBER, lexema, linea));
-                            lexema = "";
-                            estado = 0;
-                            foundNumber = false;
-                            foundDot = false;
+                            if (caracter == '.' && !foundDot) {
+                                lexema = lexema + caracter;
+                                foundDot = true;
+                                i++;
+                            } else {
+                                tokens.add(new Token(TipoToken.NUMBER, lexema, linea));
+                                lexema = "";
+                                estado = 0;
+                                foundNumber = false;
+                                foundDot = false;
+                            }
+                            break;
                         } else if (shouldBeID) {
                             tokens.add(new Token(TipoToken.ID, lexema, linea));
                             lexema = "";
                             estado = 0;
                             shouldBeID = false;
+                            break;
                         } else {
                             tokens.add(new Token(TipoToken.STRING, lexema, linea));
                             lexema = "";
