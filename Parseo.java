@@ -132,12 +132,8 @@ public class Parseo {
         if (preanalisis.equals(menorQue)) {
             coincidir(menorQue);
             coincidir(identificador);
-        } else if (preanalisis.equals(llavesIzq)) {
-            return;
         } else {
-            hayErrores = true;
-            System.out.println("Error en la posición " + preanalisis.linea +
-                    ". Se esperaba un identificador.");
+            return;
         }
     }
 
@@ -177,12 +173,8 @@ public class Parseo {
         if (preanalisis.equals(igual)) {
             coincidir(igual);
             expression();
-        } else if (preanalisis.equals(puntoComa)) {
-            return;
         } else {
-            hayErrores = true;
-            System.out.println("Error en la posición " + preanalisis.linea +
-                    ". Se esperaba un identificador.");
+            return;
         }
     }
 
@@ -201,9 +193,9 @@ public class Parseo {
             whileSTMT();
         } else if (preanalisis.equals(llavesIzq)) {
             block();
+        } else {
+            exprSTMT();
         }
-        exprSTMT();
-
     }
 
     void exprSTMT() {
@@ -227,7 +219,7 @@ public class Parseo {
             statement();
         } else {
             hayErrores = true;
-            System.out.println("Error");
+            System.out.println("Error forSTMT");
         }
     }
 
@@ -252,6 +244,7 @@ public class Parseo {
             coincidir(puntoComa);
         } else {
             expression();
+            coincidir(puntoComa);
         }
     }
 
@@ -259,10 +252,15 @@ public class Parseo {
         if (hayErrores)
             return;
 
-        if (preanalisis.equals(parentesisDer)) {
-            return;
-        } else {
+        if (preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo)
+                || preanalisis.equals(esto) || preanalisis.equals(numero) || preanalisis.equals(cadena)
+                || preanalisis.equals(identificador) || preanalisis.equals(parentesisIzq)
+                || preanalisis.equals(ssuper) || preanalisis.equals(exclamacion) || preanalisis.equals(menos)
+                || preanalisis.equals(cicloPara) || preanalisis.equals(condicionSi) || preanalisis.equals(imprime)
+                || preanalisis.equals(regresa) || preanalisis.equals(cicloMientras) || preanalisis.equals(llavesIzq)) {
             expression();
+        } else {
+            return;
         }
     }
 
@@ -317,7 +315,6 @@ public class Parseo {
             coincidir(regresa);
             returnExpOpc();
             coincidir(puntoComa);
-            expression();
         } else {
             hayErrores = true;
             System.out.println("Error returnSTMT");
@@ -328,10 +325,15 @@ public class Parseo {
         if (hayErrores)
             return;
 
-        if (preanalisis.equals(puntoComa)) {
-            return;
-        } else {
+        if (preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo)
+                || preanalisis.equals(esto) || preanalisis.equals(numero) || preanalisis.equals(cadena)
+                || preanalisis.equals(identificador) || preanalisis.equals(parentesisIzq)
+                || preanalisis.equals(ssuper) || preanalisis.equals(exclamacion) || preanalisis.equals(menos)
+                || preanalisis.equals(cicloPara) || preanalisis.equals(condicionSi) || preanalisis.equals(imprime)
+                || preanalisis.equals(regresa) || preanalisis.equals(cicloMientras) || preanalisis.equals(llavesIzq)) {
             expression();
+        } else {
+            return;
         }
     }
 
@@ -369,11 +371,18 @@ public class Parseo {
         if (hayErrores)
             return;
 
-        if (preanalisis.equals(llavesDer)) {
-            return;
-        } else {
+        if (preanalisis.equals(clase) || preanalisis.equals(funcion) || preanalisis.equals(variable)
+                || preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo)
+                || preanalisis.equals(esto) || preanalisis.equals(numero) || preanalisis.equals(cadena)
+                || preanalisis.equals(identificador) || preanalisis.equals(parentesisIzq)
+                || preanalisis.equals(ssuper) || preanalisis.equals(exclamacion) || preanalisis.equals(menos)
+                || preanalisis.equals(cicloPara) || preanalisis.equals(condicionSi) || preanalisis.equals(imprime)
+                || preanalisis.equals(regresa) || preanalisis.equals(cicloMientras) || preanalisis.equals(llavesIzq)
+                || preanalisis.equals(llavesDer)) {
             Declaration();
             blockDecl();
+        } else {
+            return;
         }
     }
 
@@ -390,7 +399,10 @@ public class Parseo {
         }
         callOpc();
 
-        if (preanalisis.equals(identificador)) {
+        if (preanalisis.equals(exclamacion) || preanalisis.equals(menos)) {
+            logicOr();
+        } else {
+            callOpc();
             coincidir(identificador);
             coincidir(igual);
             assignment();
@@ -700,11 +712,14 @@ public class Parseo {
         }
     }
 
-    void argumentsOpc() { // Depends on expression
+    void argumentsOpc() {
         if (hayErrores) {
             return;
         }
-        if (preanalisis.equals(parentesisIzq)) {
+        if (preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo)
+                || preanalisis.equals(esto) || preanalisis.equals(numero) || preanalisis.equals(cadena)
+                || preanalisis.equals(identificador) || preanalisis.equals(parentesisIzq)
+                || preanalisis.equals(ssuper) || preanalisis.equals(exclamacion) || preanalisis.equals(menos)) {
             arguments();
         } else {
             return;
