@@ -184,7 +184,7 @@ public class Escaneo {
                             shouldBeID = false;
                             break;
                         } else {
-                            tokens.add(new Token(TipoToken.STRING, lexema, linea));
+                            tokens.add(new Token(TipoToken.ID, lexema, linea));
                             lexema = "";
                             estado = 0;
 
