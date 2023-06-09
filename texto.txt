@@ -1,7 +1,3 @@
-class main(){
-    var number = 44.44.4;
-    if( number == 44){
-        return true;
-    }
-    return false;
+if(a<123){
+    print a;
 }
