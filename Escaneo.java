@@ -104,7 +104,7 @@ public class Escaneo {
                             tokens.add(new Token(TipoToken.MINUS, "-", linea));
                             i++;
                         } else if (caracter == '+') {
-                            tokens.add(new Token(TipoToken.PLUS, "-", linea));
+                            tokens.add(new Token(TipoToken.PLUS, "+", linea));
                             i++;
                         } else if (caracter == '/') {
                             tokens.add(new Token(TipoToken.SLASH, "/", linea));
@@ -125,7 +125,7 @@ public class Escaneo {
                                 tokens.add(new Token(TipoToken.DOT, ".", linea));
                                 i++;
                             }
-                        } else if (Character.isAlphabetic(caracter) || Character.isDigit(caracter)) {
+                        } else if (Character.isAlphabetic(caracter) || Character.isDigit(caracter) || caracter == '"') {
                             if (Character.isDigit(caracter) && !foundNumber) {
                                 foundNumber = !foundNumber;
                             }
@@ -149,7 +149,7 @@ public class Escaneo {
                             lexema = "";
                             estado = 0;
                             break;
-                        } else if (Character.isAlphabetic(caracter) || Character.isDigit(caracter)) {
+                        } else if (Character.isAlphabetic(caracter) || Character.isDigit(caracter) || caracter == '"') {
                             if (Character.isAlphabetic(caracter) && foundNumber) {
                                 tokens.add(new Token(TipoToken.NUMBER, lexema));
                                 lexema = "" + caracter;

@@ -1,4 +1,5 @@
 
+import java.beans.Expression;
 import java.util.List;
 
 public class Parseo {
@@ -348,7 +349,6 @@ public class Parseo {
             statement();
         } else {
             hayErrores = true;
-            System.out.println("Error whileSTMT");
         }
     }
 
@@ -360,6 +360,7 @@ public class Parseo {
             coincidir(llavesIzq);
             blockDecl();
             coincidir(llavesDer);
+
         } else {
             hayErrores = true;
             System.out.println("Error block");
@@ -370,18 +371,13 @@ public class Parseo {
         if (hayErrores)
             return;
 
-        if (preanalisis.equals(clase) || preanalisis.equals(funcion) || preanalisis.equals(variable)
-                || preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo)
-                || preanalisis.equals(esto) || preanalisis.equals(numero) || preanalisis.equals(cadena)
-                || preanalisis.equals(identificador) || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(ssuper) || preanalisis.equals(exclamacion) || preanalisis.equals(menos)
-                || preanalisis.equals(cicloPara) || preanalisis.equals(condicionSi) || preanalisis.equals(imprime)
-                || preanalisis.equals(regresa) || preanalisis.equals(cicloMientras) || preanalisis.equals(llavesIzq)) {
+        if (preanalisis.equals(llavesDer)) {
+            return;
+        } else {
             Declaration();
             blockDecl();
-        } else {
-            return;
         }
+
     }
 
     void expression() {
@@ -396,17 +392,19 @@ public class Parseo {
             return;
         }
         int x = i;
-        callOpc();
-        if (preanalisis.equals(identificador)) {
-            if (preanalisis.equals(igual)) {
-                coincidir(identificador);
-                coincidir(igual);
-                assignment();
-            }
+        logicOr();
+        assignmentOpc();
+    }
+
+    void assignmentOpc() {
+        if (hayErrores)
+            return;
+
+        if (preanalisis.equals(igual)) {
+            coincidir(igual);
+            expression();
         } else {
-            i = x;
-            preanalisis = tokens.get(i);
-            logicOr();
+            return;
         }
     }
 
@@ -610,11 +608,7 @@ public class Parseo {
                 || preanalisis.equals(identificador) || preanalisis.equals(parentesisIzq)
                 || preanalisis.equals(ssuper)) {
             call();
-            if (preanalisis.equals(punto)) {
-                coincidir(punto);
-            } else {
-                return;
-            }
+            coincidir(punto);
 
         } else {
             return;
