@@ -31,6 +31,7 @@ public enum TipoToken {
     // Numero
     NUMERO,
 
+<<<<<<< Updated upstream
     // Signos y Simbolos
 
     PAR_IZ,                 // (
@@ -57,4 +58,9 @@ public enum TipoToken {
 
     // Final de cadena
     EOF,
+=======
+    // Final de Cadena
+    EOF,
+    SOF
+>>>>>>> Stashed changes
 }

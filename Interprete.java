@@ -13,7 +13,6 @@ import java.util.Scanner;
 public class Interprete {
 
     static boolean existenErrores = false;
-
     public static void main(String[] args) throws IOException {
         if(args.length > 1) {
             System.out.println("Uso correcto: interprete [script]");
@@ -62,9 +61,27 @@ public class Interprete {
         Escaneo scanner = new Escaneo(source);
         List<Token> tokens = scanner.scanTokens();
 
+<<<<<<< Updated upstream
         for(Token token : tokens){
             System.out.println(token);
         }
+=======
+        Parseo parseo = new Parseo(tokens);
+        if(parseo.parseo()){
+            ShuntingYard shunting = new ShuntingYard(tokens);
+            List<Token> post = shunting.algoritmo();
+            for (Token token : post) {
+                if(token.tipo == TipoToken.SEMICOLON)
+                    System.out.println(token.lexema);
+                else
+                    System.out.print(token.lexema+" ");
+            }
+            GeneradorAST ast = new GeneradorAST(post);
+            Arbol arbol = ast.generarAST();
+            arbol.recorrer();
+        }
+
+>>>>>>> Stashed changes
     }
 
     /*
