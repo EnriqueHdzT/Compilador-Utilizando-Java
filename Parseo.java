@@ -69,7 +69,7 @@ public class Parseo {
                             preanalisis.tipo);
             return false;
         } else if (!hayErrores && preanalisis.equals(finCadena)) {
-            System.out.println("Consulta válida");
+            
             return true;
         }
         return false;

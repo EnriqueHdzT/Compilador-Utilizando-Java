@@ -41,11 +41,11 @@ public class SolverAritmetico {
         }
         else if(resultadoIzquierdo instanceof String && resultadoDerecho instanceof String){
             if (n.getValue().tipo == TipoToken.PLUS){
-                // Ejecutar la concatenación
+                return (String) izq.getValue().lexema + (String) der.getValue().lexema;
             }
         }
         else{
-            // Error por diferencia de tipos
+            Interprete.error(0, "Error por diferencia de tipos en la conversión.");
         }
 
         return null;

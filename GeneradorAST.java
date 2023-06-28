@@ -6,11 +6,9 @@ import java.util.ArrayDeque;
 public class GeneradorAST {
 
     private final List<Token> postfija;
-    private final Deque<Nodo> pila;
 
     public GeneradorAST(List<Token> postfija){
         this.postfija = postfija;
-        this.pila = new ArrayDeque<>();
     }
 
     public Arbol generarAST() {
