@@ -2,20 +2,16 @@ public class Token {
 
     final TipoToken tipo;
     final String lexema;
-    final Object literal;
     final int linea;
     final Object literal;
 
     public Token(TipoToken tipo, String lexema, Object literal, int linea) {
         this.tipo = tipo;
         this.lexema = lexema;
-        this.literal = literal;
         this.linea = linea;
         this.literal = null;
     }
 
-<<<<<<< Updated upstream
-=======
     public Token(TipoToken tipo, String lexema) {
         this.tipo = tipo;
         this.lexema = lexema;
@@ -42,7 +38,6 @@ public class Token {
         return false;
     }
 
->>>>>>> Stashed changes
     public String toString(){
         return tipo + " " + lexema + " " + literal;
     }
