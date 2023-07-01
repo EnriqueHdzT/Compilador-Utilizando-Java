@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Interprete {
 
     static boolean existenErrores = false;
+
     public static void main(String[] args) throws IOException {
         if (args.length > 1) {
             System.out.println("Uso correcto: interprete [script]");
@@ -30,7 +31,6 @@ public class Interprete {
             data += texto.nextLine() + "\n";
         }
         texto.close();
-        data = data.replace(" ", "");
         data = data.replace("\t", "");
         ejecutar(data);
 
@@ -46,7 +46,6 @@ public class Interprete {
         for (;;) {
             System.out.print(">>> ");
             String linea = reader.readLine();
-            linea = linea.replace(" ", "");
             linea = linea.replace("\t", "");
             if (linea == null)
                 break; // Presionar Ctrl + D
@@ -60,10 +59,10 @@ public class Interprete {
         List<Token> tokens = scanner.scanTokens();
 
         Parseo parseo = new Parseo(tokens);
-        if(parseo.parseo()){
+        if (parseo.parseo()) {
             ShuntingYard shunting = new ShuntingYard(tokens);
             List<Token> post = shunting.algoritmo();
-            
+
             GeneradorAST ast = new GeneradorAST(post);
             Arbol arbol = ast.generarAST();
             arbol.recorrer();
