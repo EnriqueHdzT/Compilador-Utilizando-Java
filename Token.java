@@ -1,9 +1,9 @@
 public class Token {
 
-    final TipoToken tipo;
-    final String lexema;
-    final int linea;
-    final Object literal;
+    public TipoToken tipo;
+    public String lexema;
+    public int linea;
+    public Object literal;
 
     public Token(TipoToken tipo, String lexema, Object literal, int linea) {
         this.tipo = tipo;
@@ -17,7 +17,7 @@ public class Token {
         this.lexema = lexema;
         this.linea = 0;
         this.literal = null;
-    } 
+    }
 
     public Token(TipoToken tipo, String lexema, double literal) {
         this.tipo = tipo;
@@ -25,24 +25,26 @@ public class Token {
         this.linea = 0;
         this.literal = literal;
     }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Token)) {
             return false;
         }
 
-        if(this.tipo == ((Token)o).tipo){
+        if (this.tipo == ((Token) o).tipo) {
             return true;
         }
 
         return false;
     }
 
-    public String toString(){
+    public String toString() {
         return tipo + " " + lexema + " " + literal;
     }
-    public boolean esPalabraReservada(){
-        switch (this.tipo){
+
+    public boolean esPalabraReservada() {
+        switch (this.tipo) {
             case CLASS:
             case FUNCTION:
             case VARIABLE:
@@ -60,11 +62,11 @@ public class Token {
                 return true;
             default:
                 return false;
+        }
     }
-}
 
-    public boolean esOperando(){
-        switch(this.tipo){
+    public boolean esOperando() {
+        switch (this.tipo) {
             case ID:
             case NUMBER:
             case STRING:
@@ -74,8 +76,8 @@ public class Token {
         }
     }
 
-    public boolean esOperador(){
-        switch(this.tipo){
+    public boolean esOperador() {
+        switch (this.tipo) {
             case PLUS:
             case MINUS:
             case SLASH:
@@ -98,7 +100,7 @@ public class Token {
     }
 
     public int aridad() {
-        switch ( this.tipo ) {
+        switch (this.tipo) {
             case PLUS:
             case MINUS:
             case SLASH:
@@ -118,8 +120,8 @@ public class Token {
         }
     }
 
-    public int precedencia(){
-        switch( this.tipo ){
+    public int precedencia() {
+        switch (this.tipo) {
             case ASTERISK:
             case SLASH:
                 return 7;
